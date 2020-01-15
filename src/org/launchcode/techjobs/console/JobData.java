@@ -1,5 +1,6 @@
 package org.launchcode.techjobs.console;
 
+import com.sun.jdi.Value;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -69,12 +70,13 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
+        value = value.toLowerCase();
 
         ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);
@@ -123,6 +125,23 @@ public class JobData {
             System.out.println("Failed to load job data");
             e.printStackTrace();
         }
+    }
+    public static ArrayList <HashMap< String, String>> findByValue(String value) {
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<> ();
+        // load data, if not done yet;
+        loadData();
+        value = value.toLowerCase();
+        String aValue;
+        for (HashMap<String, String> row: allJobs){
+            for(String column: row.keySet()){
+                aValue = row.get(column).toLowerCase();
+                if(aValue.contains(value)){
+                    jobs.add(row);
+                    break;
+                }
+            }
+        }
+        return jobs;
     }
 
 }
